@@ -722,7 +722,7 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timer);
-      showPopup("Time's Up!", `You ran out of time. Your final score is ${score}.`, correctCountry);
+      showPopup("Time's Up!", `You ran out of time. Your final score is ${score}. The answer was ${correctCountry}.`, correctCountry);
       resetGame();
     }
   }, 1000);
@@ -753,9 +753,21 @@ guessBtn.addEventListener("click", () => {
   // Add the guess to the list of guessed countries for map highlighting
   guessedCountries.push(guess);
 
-  // Add the guess to the visual list
+  // Add the guess to the visual list (with flag and name)
   const listItem = document.createElement("li");
-  listItem.textContent = guess;
+  listItem.className = "guess-item";
+  // Find the flag URL for the guessed country
+  const countryObj = countries.find(c => c.name.toLowerCase() === guess.toLowerCase());
+  const flagUrl = countryObj ? countryObj.flag : "img/flag-placeholder.webp";
+  const flagImg = document.createElement("img");
+  flagImg.src = flagUrl;
+  flagImg.alt = `Flag of ${guess}`;
+  flagImg.className = "guess-flag";
+  const nameSpan = document.createElement("span");
+  nameSpan.className = "guess-country";
+  nameSpan.textContent = guess;
+  listItem.appendChild(flagImg);
+  listItem.appendChild(nameSpan);
   guessesList.appendChild(listItem);
 
   // Highlight guessed countries on the map for both modes
