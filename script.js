@@ -48,7 +48,7 @@ const countries = [
   { name: "Central African Republic", flag: "https://flagcdn.com/cf.svg" },
   { name: "Congo", flag: "https://flagcdn.com/cg.svg" },
   { name: "Switzerland", flag: "https://flagcdn.com/ch.svg" },
-  { name: "Côte d'Ivoire", flag: "https://flagcdn.com/ci.svg" },
+  { name: "Côte d'Ivoire (Ivory Coast)", flag: "https://flagcdn.com/ci.svg" },
   { name: "Cook Islands", flag: "https://flagcdn.com/ck.svg" },
   { name: "Chile", flag: "https://flagcdn.com/cl.svg" },
   { name: "Cameroon", flag: "https://flagcdn.com/cm.svg" },
@@ -218,6 +218,296 @@ const countries = [
   { name: "Zimbabwe", flag: "https://flagcdn.com/zw.svg" }
 ];
 
+// Pool of Countries with Projects
+const countryProjects = { // Only showing one project per country for simplicity
+  "Bolivia" : [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/BO.WFP.Q1.11.076/001/BO.WFP.Q1.11.076.001-48383.jpeg", 
+      location: "Parra Rancho", 
+      url: "https://www.charitywater.org/projects/76-1#"},
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/BO.WFP.Q1.11.076/007/BO.WFP.Q1.11.076.007-48388.jpeg",
+      location: "Isabel Torrico School",
+      url: "https://www.charitywater.org/projects/76-7"}, 
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/BO.WFP.Q1.11.076/003/BO.WFP.Q1.11.076.003-48385.jpeg",
+      location: "Cochimita Village",
+      url: "https://www.charitywater.org/projects/76-3#"},
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/BO.WFP.Q1.11.076/004/BO.WFP.Q1.11.076.004-48386.jpeg",
+      location: "Pucara Chico Village",
+      url: "https://www.charitywater.org/projects/76-4"}
+  ],
+
+  "Guatemala": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/GT.WFP.Q1.11.077/005/GT.WFP.Q1.11.077.005-48639.JPG", 
+      location: "Chiboy (+ Chustum, Ixcabuleu, Chixpach, Chilil II, Mixcolaja, y Pujerja)", 
+      url: "https://www.charitywater.org/projects/77-5"},
+  ],
+
+  "Honduras": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/HN.WFP.Q1.11.078/015/HN.WFP.Q1.11.078.015-48403.JPG",
+      location: "La Canada Village",
+      url: "https://www.charitywater.org/projects/78-15"
+    }
+  ],
+
+  "Haiti": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/HT.CON.Q4.10.068/003/HT.CON.Q4.10.068.003-60703.jpg",
+      location: "Citadele",
+      url: "https://www.charitywater.org/projects/68-3"
+    }
+  ],
+
+  "Senegal": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/SN.ACA.2H.19.338/577/SN.ACA.2H.19.338-577-112cbdd714bdb2d5e0e1859c21ec5df30620e5c7.jpg",
+      location: "Branol",
+      url: "https://www.charitywater.org/projects/338-577"
+    }
+  ],
+
+  "Sierra Leone": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/SL.WHI.1H.23.501/052/SL.WHI.1H.23.501-52-92fe577efcfb50cc4f2ce0392aa72fc060e8b417.jpg",
+      location: "Dandaya",
+      url: "https://www.charitywater.org/projects/501-52"
+    }
+  ],
+
+  "Liberia": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/LR.EQU.Q2.09.039/028/LR.EQU.Q2.09.039.028-47543.jpg",
+      location: "Zodru Clinic",
+      url: "https://www.charitywater.org/projects/39-28"
+    }
+  ],
+
+  "Côte d'Ivoire": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/CI.IRC.2H.22.490/018/CI.IRC.2H.22.490-18-2c1ad8356c32ae5bbc5b70484dc4f476a707057c.jpg",
+      location: "Golikro",
+      url: "https://www.charitywater.org/projects/490-18"
+    }
+  ],
+
+  "Mali": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/ML.WVI.1H.17.246/026/ML.WVI.1H.17.246.026-7a12ddf7092066c8b343793dd7ea39827aeba66d.jpg",
+      location: "Samantara",
+      url: "https://www.charitywater.org/projects/246-26"
+    }
+  ], 
+
+  "Burkina Faso": [ 
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/BF.EVI.2H.20.383/025/BF.EVI.2H.20.383-25-7c0c24feb39f681ea56a03a04fddf8c3d279ef4d.jpg",
+      location: "Ouayalgui V4",
+      url: "https://www.charitywater.org/projects/383-25"
+    }
+  ],
+
+  "Niger": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/NE.WVI.2H.18.278/078/NE.WVI.2H.18.278.078-5241eda7e3975636989950d2e2c9a788590bfeb8.jpg",
+      location: "Guidan Ara Mijin Yawa",
+      url: "https://www.charitywater.org/projects/278-78"
+    }
+  ],
+
+  "Cemtral African Republic": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/CF.ICD.Q4.10.065/106/CF.ICD.Q4.10.065.106-60600.jpg",
+      location: "Kaga - Bandoro Quartier Abakar",
+      url: "https://www.charitywater.org/projects/65-106"
+    }
+  ],
+
+  "Democratic Republic of the Congo": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/DR.ACF.Q1.08.018/019/DR.ACF.Q1.08.018.019-46565.jpg",
+      location: "Camp Militaries",
+      url: "https://www.charitywater.org/projects/18-19"
+    }
+  ],
+
+  "Tanzania": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/TZ.CRS.2H.22.485/042/TZ.CRS.2H.22.485-42-732f202b8e8201756f78253036e1274cc7c96791.jpg",
+      location: "Igundu",
+      url: "https://www.charitywater.org/projects/485-42"
+    }
+  ],
+
+  "Uganda": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/UG.ILF.Q3.10.063/003/UG.ILF.Q3.10.063.003-48490.jpg",
+      location: "Wapwoyo dugo gang",
+      url: "https://www.charitywater.org/projects/63-3"
+    }
+  ],
+
+  "Kenya": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/KE.LWI.Q3.08.031/016/KE.LWI.Q3.08.031.016-48380.jpg",
+      location: "Uthini (ABC) School",
+      url: "https://www.charitywater.org/projects/31-16"
+    }
+  ],
+
+  "Rwanda": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/RW.WFP.Q4.12.131/162/RW.WFP.Q4.12.131.162-125828.jpg",
+      location: "Rwahi Secondary",
+      url: "https://www.charitywater.org/projects/131-162"
+    }
+  ],
+
+  "Ethiopia": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/ET.IRC.Q2.11.090/087/ET.IRC.Q2.11.090.087-72438.jpg",
+      location: "Anjama Antata",
+      url: "https://www.charitywater.org/projects/90-87"
+    }
+  ],
+
+  "Zambia": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/ZM.VWZ.1H.19.306/49/ZM.VWZ.1H.19.306-49-4402455f1d4512263a61067f7fa20430fcc0ea05.jpg",
+      location: "Namaweshi/Kazungula",
+      url: "https://www.charitywater.org/projects/306-49"
+    }
+  ],
+
+  "Zimbabwe": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/ZW.WHH.2H.22.482/164/ZW.WHH.2H.22.482-164-513ba670f334fea7643079f0bbb0e8645aaf24dd.jpg",
+      location: "Spencer",
+      url: "https://www.charitywater.org/projects/482-164"
+    }
+  ],
+
+  "Mozambique": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/MZ.WVI.Q4.13.149/009/MZ.WVI.Q4.13.149.009-133350.JPG",
+      location: "Chale",
+      url: "https://www.charitywater.org/projects/149-9"
+    }
+  ],
+
+  "Malawi": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/MW.WVI.Q4.13.150/339/MW.WVI.Q4.13.150.339-137081.jpg",
+      location: "Chendamata",
+      url: "https://www.charitywater.org/projects/150-339"
+    }
+  ],
+
+  "Madagascar": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/MG.CRS.1H.20.365/3005/MG.CRS.1H.20.365-3005-e54400bedd56fe761da02de23135831bd2b8d26c.jpg",
+      location: "Ranomainty",
+      url: "https://www.charitywater.org/projects/365-211"
+    }
+  ],
+
+  "Laos": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/LA.TRV.1H.20.346/10001/LA.TRV.1H.20.346-10001-6e7f4269dccc99b21ea4806cdcabb6701dd5d5cb.jpg",
+      location: "Khokman",
+      url: "https://www.charitywater.org/projects/346-526"
+    }
+  ],
+
+  "Cambodia": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/KH.SAM.Q4.10.066/146/KH.SAM.Q4.10.066.146-48137.jpg",
+      location: "Tangkrosang",
+      url: "https://www.charitywater.org/projects/66-146"
+    }
+  ],
+
+  "India": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/IN.WAA.Q4.12.133/002/IN.WAA.Q4.12.133.002-115434.JPG",
+      location: "60 Quarter A",
+      url: "https://www.charitywater.org/projects/133-2"
+    }
+  ],
+
+  "Nepal": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/NP.NEW.Q2.12.121/032/NP.NEW.Q2.12.121.032-72874.jpg",
+      location: "Dunde",
+      url: "https://www.charitywater.org/projects/121-32"
+    }
+  ],
+
+  "Bangladesh": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/BD.CON.Q3.12.125/207/BD.CON.Q3.12.125.207-115295.JPG",
+      location: "Safullapara",
+      url: "https://www.charitywater.org/projects/125-207"
+    }
+  ],
+
+  "Pakistan": [
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/PK.ACF.Q4.13.153/144/PK.ACF.Q4.13.153.144-139428.JPG",
+      location: "Umeed Dero 2",
+      url: "https://www.charitywater.org/projects/153-144"
+    }
+  ]
+};
+
+// Pool of Countries without Projects
+const countryFunFacts = {};
+
+//Use PapaParse to load and parse the CSV
+Papa.parse('data/funfact.csv', {
+  download: true,
+  header: true, 
+  complete: function(results) {
+    // Find the actual data start index.
+    // The actual header row in your CSV (which contains "Country Name")
+    // is treated as a data row under the "Data Source" column by PapaParse.
+    // So, we look for the row where 'Data Source' is 'Country Name' to find our starting point.
+    let dataStartIndex = 0;
+    for (let i = 0; i < results.data.length; i++) {
+      // Check for the row that acts as the actual header in the original CSV
+      if (results.data[i] && results.data[i]['Data Source'] === 'Country Name' && results.data[i]['World Development Indicators'] === 'Country Code') {
+        dataStartIndex = i + 1; // Actual country data starts from the next row
+        break;
+      }
+    }
+
+    // Loop through each relevant data row
+    for (let i = dataStartIndex; i < results.data.length; i++) {
+      const row = results.data[i];
+
+      // Skip any empty or malformed rows that might appear (e.g., last line in CSV)
+      if (!row || Object.keys(row).length === 0 || !row['Data Source']) {
+        continue;
+      }
+
+      // Access country name using "Data Source" as observed
+      const country = row['Data Source'].trim();
+
+      // Access 2022 percentage from __parsed_extra[63] as observed
+      let percent = row.__parsed_extra && row.__parsed_extra[63] ? row.__parsed_extra[63].trim() : '';
+
+      // Only add if country and percent are valid and not '' (missing data)
+      if (country && percent !== '' && !isNaN(Number(percent))) {
+        percent = Number(percent).toFixed(1);
+        countryFunFacts[country] = `${percent}% of people in ${country} have access to at least basic drinking water services. (World Bank, 2022)`;
+      }
+    }
+  }
+});
+
 // Randomly select a country from the pool and display its flag
 function selectRandomCountry() {
   const randomIndex = Math.floor(Math.random() * countries.length);
@@ -229,12 +519,45 @@ function selectRandomCountry() {
   flagImg.alt = `Flag of ${correctCountry}`;
 }
 
-// The call to selectRandomCountry() is removed from here to allow resetGame() to set the initial state.
-
 // Helper function to show the popup with a custom message
-function showPopup(title, message) {
+function showPopup(title, message, countryName) {
   popupTitle.textContent = title;
   popupMessage.textContent = message;
+
+  // Remove old project/fun fact section if it exists
+  const oldSection = document.getElementById('projectOrFact');
+  if (oldSection) oldSection.remove();
+
+  // Create a new section
+  const section = document.createElement('div');
+  section.id = 'projectOrFact';
+  section.style.marginTop = '1.5rem';
+
+  // Check for projects
+  if (countryProjects[countryName]) {
+    section.innerHTML = `<h4>Check out this project in ${countryName}!</h4>`;
+    const projectList = document.createElement('div');
+    projectList.className = 'project-list';
+    countryProjects[countryName].forEach(project => {
+      const card = document.createElement('div');
+      card.className = 'project-card';
+      card.innerHTML = `
+        <img src="${project.thumbnail}" alt="Picture showing project in ${project.location}" class="project-thumbnail">
+        <div class="project-location">${project.location}</div>
+        <a href="${project.url}" target="_blank" class="project-link">View Project</a>
+        </div>
+      `;
+      projectList.appendChild(card);
+    });
+    section.appendChild(projectList);
+  } else if (countryFunFacts[countryName]) {
+    section.innerHTML = `<h4>Did you know?</h4><p>${countryFunFacts[countryName]}</p>`;
+  } else {
+    section.innerHTML = `<h4>Did you know?</h4><p>No data available for this country.</p>`;
+  }
+
+  // Add the section to the popup
+  document.querySelector(".popup").appendChild(section);
   popupOverlay.style.display = "flex";
 }
 
@@ -299,22 +622,28 @@ function getProximityColor(distance) {
 function getCountryProximity(guessName, correctName) {
   // If correct
   if (guessName.toLowerCase() === correctName.toLowerCase()) return 0;
+
   // If adjacent (shares a border)
   const guessFeature = findCountryFeature(guessName);
   const correctFeature = findCountryFeature(correctName);
+
   if (!guessFeature || !correctFeature) return 5; // very far if not found
+
   // Check if they are neighbors (using GeoJSON neighbors property if available)
   // For beginners, we use bounding box overlap as a simple proxy for adjacency
   const g = guessFeature.bbox || guessFeature.geometry && L.geoJSON(guessFeature).getBounds();
   const c = correctFeature.bbox || correctFeature.geometry && L.geoJSON(correctFeature).getBounds();
   if (g && c && L.latLngBounds(g).intersects(L.latLngBounds(c))) return 1;
+
   // Otherwise, use distance between centroids
   const guessCenter = L.geoJSON(guessFeature).getBounds().getCenter();
   const correctCenter = L.geoJSON(correctFeature).getBounds().getCenter();
   const dist = guessCenter.distanceTo(correctCenter) / 1000; // in km
-  if (dist < 1000) return 2; // close
-  if (dist < 3000) return 3; // medium
-  if (dist < 6000) return 4; // far
+
+  if (dist < 3000) return 2; // close
+  if (dist < 6000) return 3; // medium
+  if (dist < 9000) return 4; // far
+
   return 5; // very far
 }
 
@@ -330,7 +659,7 @@ let timer = null; // Timer for blitz mode
 const modeSwitch = document.getElementById("modeSwitch");
 
 // Daily mode country (fixed for the day)
-const dailyCountry = "Bolivia"; // Example fixed country
+const dailyCountry = "Angola"; // Example fixed country
 
 // Update mode based on toggle
 modeSwitch.addEventListener("change", () => {
@@ -393,7 +722,7 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timer);
-      showPopup("Time's Up!", `You ran out of time. Your final score is ${score}.`);
+      showPopup("Time's Up!", `You ran out of time. Your final score is ${score}.`, correctCountry);
       resetGame();
     }
   }, 1000);
@@ -455,7 +784,7 @@ guessBtn.addEventListener("click", () => {
 
   if (mode === "daily") {
     if (guess.toLowerCase() === correctCountry.toLowerCase()) {
-      showPopup("Congratulations!", `You guessed the daily country: ${correctCountry}`);
+      showPopup("Congratulations!", `You guessed the daily country: ${correctCountry}`, correctCountry);
       countryInput.disabled = true; // Disable further input
       guessBtn.disabled = true; // Disable the button
     }
@@ -497,26 +826,15 @@ countryInput.addEventListener("keypress", (event) => {
 window.addEventListener('DOMContentLoaded', () => {
   // Create the map and set the initial view to the world
   const map = L.map('map', {
-    zoomControl: false, // We'll use our own zoom buttons
-    attributionControl: false // Hide attribution for simplicity
-  }).setView([20, 0], 2); // Centered on the world
+    zoomControl: true, // Use default zoom controls
+    attributionControl: false, // Hide attribution for simplicity
+  }).setView([0, 0], 3); // Centered on the world
 
   // Add a basic tile layer (the map background)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 5,
-    minZoom: 2
+    maxZoom: 6,
+    minZoom: 3
   }).addTo(map);
-
-  // Add zoom in/out button functionality
-  const zoomInBtn = document.getElementById('zoomIn');
-  const zoomOutBtn = document.getElementById('zoomOut');
-
-  zoomInBtn.addEventListener('click', () => {
-    map.zoomIn();
-  });
-  zoomOutBtn.addEventListener('click', () => {
-    map.zoomOut();
-  });
 
   // OPTIONAL: Add a simple GeoJSON world outline (countries)
   // This uses a free GeoJSON file from a CDN

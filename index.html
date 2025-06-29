@@ -43,10 +43,6 @@
       <div class="globe-container">
         <!-- Interactive map will be here -->
         <div id="map" class="leaflet-map"></div>
-        <div class="zoom-controls">
-          <button id="zoomIn">🔍+</button>
-          <button id="zoomOut">🔍-</button>
-        </div>
       </div>
     </main>
   </div>
@@ -60,6 +56,8 @@
     </div>
   </div>
 
+  <!-- Add PapaParse for CSV parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <!-- Add Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js" defer></script>
   <!-- Script at end for best practice -->
