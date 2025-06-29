@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity Water Flag Guessing Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+  <!-- Place script at the end for better loading -->
+  <header>
+    <div class="logo">
+      <img src="img/water-can-transparent.png" alt="charity water logo" class="logo-icon"/>
+      charity: water
+    </div>
+    <div class="mode-toggle">
+      <!-- Toggle for unlimited/daily mode -->
+      <label>
+        <input type="checkbox" id="modeSwitch"/>
+        Blitz Mode
+      </label>
+    </div>
+    <button class="give-btn">GIVE 💧</button>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <!-- Country flag -->
+      <img src="img/flag-placeholder.webp" alt="Country Flag" class="flag-image" id="countryFlag"/>
+      <div class="guess-section">
+        <input type="text" id="countryInput" placeholder="Guess Country Name..."/>
+        <button id="guessBtn">Guess</button>
+      </div>
+      <div class="guesses">
+        <h3>Guesses</h3>
+        <ul id="guessesList"></ul>
+      </div>
+    </aside>
+
+    <main class="game-area">
+      <div class="globe-container">
+        <!-- Interactive map will be here -->
+        <div id="map" class="leaflet-map"></div>
+        <div class="zoom-controls">
+          <button id="zoomIn">🔍+</button>
+          <button id="zoomOut">🔍-</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Popup for game results -->
+  <div class="popup-overlay" id="popupOverlay" style="display: none;">
+    <div class="popup">
+      <h2 id="popupTitle"></h2>
+      <p id="popupMessage"></p>
+      <button class="close-btn" id="popupCloseBtn">Close</button>
+    </div>
+  </div>
+
+  <!-- Add Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js" defer></script>
+  <!-- Script at end for best practice -->
+  <script src="script.js"></script>
+</body>
+</html>
