@@ -57,6 +57,8 @@ header {
 }
 
 .give-btn {
+  text-decoration: none;
+  color: #333;
   background-color: #ffc907;
   border: none;
   padding: .7rem 1rem;
