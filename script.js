@@ -609,14 +609,6 @@ function hidePopup() {
     blitzPopupActive = false; // Reset flag
     resetGame(); // Start a new round
   }
-  // If the popup was the blitz difficulty selection and no difficulty was chosen, uncheck the blitz mode switch
-  const difficultySection = document.getElementById('projectOrFact');
-  if (difficultySection && difficultySection.textContent && difficultySection.textContent.includes('Easy') && mode === "blitz" && !blitzPopupActive) {
-    // Uncheck the mode switch and reset to daily
-    modeSwitch.checked = false;
-    mode = "daily";
-    resetGame();
-  }
 }
 
 // Add event listener to the popup close button (the grey X)
