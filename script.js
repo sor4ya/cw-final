@@ -7,7 +7,7 @@ const guessesList = document.getElementById("guessesList");
 const popupOverlay = document.getElementById("popupOverlay");
 const popupTitle = document.getElementById("popupTitle");
 const popupMessage = document.getElementById("popupMessage");
-const popupCloseBtn = document.getElementById("popupCloseBtn");
+const popupCloseBtn = document.getElementById("popupCloseBtn"); // This is now the grey X span
 
 let correctCountry = ''; // The country to guess, can be changed
 
@@ -205,7 +205,7 @@ const countries = [
   { name: "United States", flag: "https://flagcdn.com/us.svg" },
   { name: "Uruguay", flag: "https://flagcdn.com/uy.svg" },
   { name: "Uzbekistan", flag: "https://flagcdn.com/uz.svg" },
-  { name: "Vatican City State (Holy See)", flag: "https://flagcdn.com/va.svg" },
+  { name: "Vatican", flag: "https://flagcdn.com/va.svg" },
   { name: "Saint Vincent and the Grenadines", flag: "https://flagcdn.com/vc.svg" },
   { name: "Venezuela", flag: "https://flagcdn.com/ve.svg" },
   { name: "Vietnam", flag: "https://flagcdn.com/vn.svg" },
@@ -244,6 +244,21 @@ const countryProjects = { // Only showing one project per country for simplicity
       thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/GT.WFP.Q1.11.077/005/GT.WFP.Q1.11.077.005-48639.JPG", 
       location: "Chiboy (+ Chustum, Ixcabuleu, Chixpach, Chilil II, Mixcolaja, y Pujerja)", 
       url: "https://www.charitywater.org/projects/77-5"},
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/GT.WFP.Q1.11.077/019/GT.WFP.Q1.11.077.019-48651.JPG",
+      location: "Santa Maria",
+      url: "https://www.charitywater.org/projects/77-19"
+    },
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/GT.WFP.Q1.11.077/020/GT.WFP.Q1.11.077.020-48652.JPG",
+      location: "Pakiacaj",
+      url: "https://www.charitywater.org/projects/77-12#"
+    },
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/GT.WFP.Q1.11.077/001/GT.WFP.Q1.11.077.001-48406.JPG",
+      location: "Aguilix I",
+      url: "https://www.charitywater.org/projects/77-1"
+    }
   ],
 
   "Honduras": [
@@ -251,6 +266,12 @@ const countryProjects = { // Only showing one project per country for simplicity
       thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/HN.WFP.Q1.11.078/015/HN.WFP.Q1.11.078.015-48403.JPG",
       location: "La Canada Village",
       url: "https://www.charitywater.org/projects/78-15"
+    },
+
+    {
+      thumbnail: "https://cw-saizi-photos-production.s3.amazonaws.com/HN.WFP.Q1.11.078/012/HN.WFP.Q1.11.078.012-48400.JPG",
+      location: "El Carmen Village",
+      url: "https://www.charitywater.org/projects/78-12"
     }
   ],
 
@@ -535,7 +556,12 @@ function showPopup(title, message, countryName) {
 
   // Check for projects
   if (countryProjects[countryName]) {
-    section.innerHTML = `<h4>Check out this project in ${countryName}!</h4>`;
+    if (countryProjects[countryName].length > 1) {
+      section.innerHTML = `<h4>Check out these projects in ${countryName}!</h4>`;
+    } else {
+      section.innerHTML = `<h4>Check out this project in ${countryName}!</h4>`;
+    }
+    
     const projectList = document.createElement('div');
     projectList.className = 'project-list';
     countryProjects[countryName].forEach(project => {
@@ -559,15 +585,42 @@ function showPopup(title, message, countryName) {
   // Add the section to the popup
   document.querySelector(".popup").appendChild(section);
   popupOverlay.style.display = "flex";
+
+  // If in blitz mode and this is a losing popup, set flag to wait for close
+  if (mode === "blitz" && title === "Time's Up!") {
+    blitzWaitingForPopup = true;
+  }
 }
 
 // Helper function to hide the popup
 function hidePopup() {
   popupOverlay.style.display = "none";
+  // --- BEGINNER: Clear colored countries from the map when closing popup in blitz mode ---
+  if (geojsonLayer && mode === "blitz") {
+    geojsonLayer.setStyle({
+      color: '#2E9DF7', // Default border color
+      weight: 1,
+      fillColor: '#4FCB53', // Default fill color
+      fillOpacity: 0.5
+    });
+  }
+  // If we are in blitz mode and the blitz losing popup was active, reset the game
+  if (mode === "blitz" && blitzPopupActive) {
+    blitzPopupActive = false; // Reset flag
+    resetGame(); // Start a new round
+  }
+  // If the popup was the blitz difficulty selection and no difficulty was chosen, uncheck the blitz mode switch
+  const difficultySection = document.getElementById('projectOrFact');
+  if (difficultySection && difficultySection.textContent && difficultySection.textContent.includes('Easy') && mode === "blitz" && !blitzPopupActive) {
+    // Uncheck the mode switch and reset to daily
+    modeSwitch.checked = false;
+    mode = "daily";
+    resetGame();
+  }
 }
 
-// Add event listener to the popup close button
-popupCloseBtn.addEventListener("click", hidePopup);
+// Add event listener to the popup close button (the grey X)
+popupCloseBtn.addEventListener("click", hidePopup); // When the X is clicked, hide the popup
 
 // Helper function to show feedback for invalid guesses
 function showInvalidGuessFeedback() {
@@ -650,21 +703,90 @@ function getCountryProximity(guessName, correctName) {
 // Store guessed country names for coloring
 const guessedCountries = [];
 
+// Helper: Get the daily country based on the current date
+function getDailyCountry() {
+  // Get today's date as YYYY-MM-DD
+  const today = new Date();
+  // We'll use the number of days since a fixed date to pick a country
+  const startDate = new Date('2024-01-01'); // You can change this start date if you want
+  const daysSinceStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+  // Use modulo to cycle through the countries array
+  const index = daysSinceStart % countries.length;
+  return countries[index].name;
+}
+
 // Mode settings
 let mode = "daily"; // Default mode
 let score = 0; // Score for blitz mode
 let timer = null; // Timer for blitz mode
+let blitzWaitingForPopup = false; // Track if waiting for popup close in blitz mode
+let blitzPopupActive = false; // Track if the blitz losing popup is open
+let blitzTimeLimit = 30; // Default to 30s (Normal)
 
-// Reference to mode switch checkbox
-const modeSwitch = document.getElementById("modeSwitch");
+// Show blitz difficulty selection popup
+function showBlitzDifficultyPopup() {
+  // Remove any existing popup content
+  popupTitle.textContent = "Choose Blitz Difficulty";
+  popupMessage.textContent = "How much time per flag?";
+  const oldSection = document.getElementById('projectOrFact');
+  if (oldSection) oldSection.remove();
 
-// Daily mode country (fixed for the day)
-const dailyCountry = "Angola"; // Example fixed country
+  // Create a section for buttons
+  const section = document.createElement('div');
+  section.id = 'projectOrFact';
+  section.style.marginTop = '1.5rem';
+  section.style.display = 'flex';
+  section.style.flexDirection = 'column';
+  section.style.gap = '1rem';
+  section.style.alignItems = 'center';
+
+  // Helper to create a button
+  function makeBtn(label, seconds) {
+    const btn = document.createElement('button');
+    btn.textContent = label;
+    btn.style.padding = '0.7rem 1.5rem';
+    btn.style.fontWeight = 'bold';
+    btn.style.fontSize = '1.1rem';
+    btn.style.borderRadius = '6px';
+    btn.style.border = 'none';
+    btn.style.cursor = 'pointer';
+    btn.style.backgroundColor = '#ffc907';
+    btn.style.color = '#222';
+    btn.addEventListener('click', () => {
+      blitzTimeLimit = seconds;
+      hidePopup();
+      resetGame(); // Start blitz with chosen time
+    });
+    btn.addEventListener('mouseover', () => {
+      btn.style.backgroundColor = '#2E9DF7';
+      btn.style.color = '#fff';
+    });
+    btn.addEventListener('mouseout', () => {
+      btn.style.backgroundColor = '#ffc907';
+      btn.style.color = '#222';
+    });
+    return btn;
+  }
+
+  // Add buttons
+  section.appendChild(makeBtn('Easy (1 min)', 60));
+  section.appendChild(makeBtn('Normal (30s)', 30));
+  section.appendChild(makeBtn('Hard (10s)', 10));
+
+  document.querySelector('.popup').appendChild(section);
+  popupOverlay.style.display = 'flex';
+}
 
 // Update mode based on toggle
 modeSwitch.addEventListener("change", () => {
-  mode = modeSwitch.checked ? "blitz" : "daily";
-  resetGame();
+  if (modeSwitch.checked) {
+    // If switching to blitz, show difficulty popup
+    mode = "blitz";
+    showBlitzDifficultyPopup();
+  } else {
+    mode = "daily";
+    resetGame();
+  }
 });
 
 // Reset the game based on the selected mode
@@ -684,7 +806,18 @@ function resetGame() {
   countryInput.disabled = false;
   guessBtn.disabled = false;
 
+  // --- BEGINNER: Clear colored countries from the map when switching modes ---
+  if (geojsonLayer) {
+    geojsonLayer.setStyle({
+      color: '#2E9DF7', // Default border color
+      weight: 1,
+      fillColor: '#4FCB53', // Default fill color
+      fillOpacity: 0.5
+    });
+  }
+
   if (mode === "daily") {
+    const dailyCountry = getDailyCountry(); // Get the daily country for today
     correctCountry = dailyCountry; // Set the fixed daily country
     const flagImg = document.getElementById("countryFlag");
     const dailyCountryData = countries.find(c => c.name === dailyCountry);
@@ -702,13 +835,17 @@ function resetGame() {
     countryInput.parentNode.appendChild(newScoreDisplay);
 
     selectRandomCountry(); // Pick a random country for blitz mode
-    startTimer(); // Start the 5-minute timer
+    startTimer(); // Start the timer for the first flag
   }
 }
 
-// Start the 30 seconds timer for blitz mode
+// Start the timer for blitz mode, using blitzTimeLimit
 function startTimer() {
-  let timeLeft = 30; // 30 seconds
+  let timeLeft = blitzTimeLimit; // Use selected time
+  // Remove any existing timer display
+  const oldTimer = document.getElementById('timerDisplay');
+  if (oldTimer) oldTimer.remove();
+  // Create a new timer display
   const timerDisplay = document.createElement("div");
   timerDisplay.id = "timerDisplay";
   timerDisplay.style.marginTop = "10px";
@@ -720,10 +857,12 @@ function startTimer() {
     const seconds = timeLeft % 60;
     timerDisplay.textContent = `Time left: ${seconds}`;
 
+    // If time runs out, show losing popup and pause game
     if (timeLeft <= 0) {
       clearInterval(timer);
+      blitzPopupActive = true; // Mark popup as active
       showPopup("Time's Up!", `You ran out of time. Your final score is ${score}. The answer was ${correctCountry}.`, correctCountry);
-      resetGame();
+      // Do NOT resetGame() here. Wait for popup to close.
     }
   }, 1000);
 }
@@ -815,6 +954,9 @@ guessBtn.addEventListener("click", () => {
         fillColor: '#4FCB53',
         fillOpacity: 0.5
       });
+      // Start a new timer for the next flag
+      clearInterval(timer); // Clear any existing timer
+      startTimer(); // Start timer for new flag
     } else {
       score -= 25; // Deduct points for incorrect guess
     }
@@ -833,11 +975,20 @@ countryInput.addEventListener("keypress", (event) => {
   }
 });
 
+const worldBounds = [
+  [-85, -180], // Southwest coordinates
+  [85, 180]    // Northeast coordinates
+];
+
 // --- BEGINNER-FRIENDLY INTERACTIVE MAP WITH LEAFLET ---
 // Wait for the DOM to load before running map code
 window.addEventListener('DOMContentLoaded', () => {
   // Create the map and set the initial view to the world
   const map = L.map('map', {
+    maxBounds: worldBounds, // Set bounds to prevent panning too far
+    maxBoundsViscosity: 1.0, // Prevents panning outside bounds
+    zoomSnap: 0.1, // Allows for smoother zooming
+    zoomDelta: 0.5, // Smaller zoom steps for better control
     zoomControl: true, // Use default zoom controls
     attributionControl: false, // Hide attribution for simplicity
   }).setView([0, 0], 3); // Centered on the world
@@ -867,4 +1018,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Initialize the game on page load to set the correct mode and country
 resetGame();
+
 

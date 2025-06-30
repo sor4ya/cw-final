@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charity Water Flag Guessing Game</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <!-- Add Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
@@ -14,13 +17,7 @@
     <div class="logo">
       <img src="img/cw_logo_horizontal.png" alt="charity water logo" class="logo-icon"/>
     </div>
-    <div class="mode-toggle">
-      <!-- Toggle for unlimited/daily mode -->
-      <label>
-        <input type="checkbox" id="modeSwitch"/>
-        Blitz Mode
-      </label>
-    </div>
+    <!-- Removed mode-toggle from header -->
     <button class="give-btn">GIVE 💧</button>
   </header>
 
@@ -41,6 +38,13 @@
 
     <main class="game-area">
       <div class="globe-container">
+        <!-- Blitz mode switch moved here -->
+        <div class="map-mode-toggle">
+          <label>
+            <input type="checkbox" id="modeSwitch"/>
+            Blitz Mode
+          </label>
+        </div>
         <!-- Interactive map will be here -->
         <div id="map" class="leaflet-map"></div>
       </div>
@@ -52,7 +56,16 @@
     <div class="popup">
       <h2 id="popupTitle"></h2>
       <p id="popupMessage"></p>
-      <button class="close-btn" id="popupCloseBtn">Close</button>
+      <span class="close-x" id="popupCloseBtn" title="Close">&times;</span>
+    </div>
+  </div>
+
+  <!-- Popup for stats -->
+  <div class="popup-overlay" id="statsPopupOverlay" style="display: none;">
+    <div class="popup">
+      <h2>Stats</h2>
+      <ul id="statsList" style="text-align:left; margin-bottom:1.5rem;"></ul>
+      <span class="close-x" id="statsCloseBtn" title="Close">&times;</span>
     </div>
   </div>
 
