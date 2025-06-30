@@ -529,6 +529,13 @@ Papa.parse('data/funfact.csv', {
   }
 });
 
+function playSoundEffect(soundFile) {
+  const audio = new Audio(soundFile)
+  audio.play().catch(error => {
+    console.error("Error playing sound effect:", error);
+  });
+}
+
 // Randomly select a country from the pool and display its flag
 function selectRandomCountry() {
   const randomIndex = Math.floor(Math.random() * countries.length);
@@ -851,6 +858,7 @@ function startTimer() {
 
     // If time runs out, show losing popup and pause game
     if (timeLeft <= 0) {
+      playSoundEffect('assets/negative_beeps-6008.mp3'); // Play losing sound effect
       clearInterval(timer);
       blitzPopupActive = true; // Mark popup as active
       showPopup("Time's Up!", `You ran out of time. Your final score is ${score}. The answer was ${correctCountry}.`, correctCountry);
@@ -927,6 +935,7 @@ guessBtn.addEventListener("click", () => {
 
   if (mode === "daily") {
     if (guess.toLowerCase() === correctCountry.toLowerCase()) {
+      playSoundEffect('assets/good-6081.mp3'); // Play success sound effect
       showPopup("Congratulations!", `You guessed the daily country: ${correctCountry}`, correctCountry);
       countryInput.disabled = true; // Disable further input
       guessBtn.disabled = true; // Disable the button
@@ -1010,5 +1019,3 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Initialize the game on page load to set the correct mode and country
 resetGame();
-
-
